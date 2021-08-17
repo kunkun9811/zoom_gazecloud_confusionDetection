@@ -1,10 +1,13 @@
+/*** NOTE: Various functions for index.html ***/
+
+/** NOTE: For GazeCloud API **/
 function PlotGaze(GazeData) {
   /*
-            GazeData.state // 0: valid gaze data; -1 : face tracking lost, 1 : gaze uncalibrated
-            GazeData.docX // gaze x in document coordinates
-            GazeData.docY // gaze y in document cordinates
-            GazeData.time // timestamp
-        */
+    GazeData.state // 0: valid gaze data; -1 : face tracking lost, 1 : gaze uncalibrated
+    GazeData.docX // gaze x in document coordinates
+    GazeData.docY // gaze y in document cordinates
+    GazeData.time // timestamp
+*/
 
   // NOTE: get DOM elements
   //   document.getElementById("GazeData").innerHTML =
@@ -78,3 +81,13 @@ window.addEventListener("load", function () {
   GazeCloudAPI.UseClickRecalibration = true;
   GazeCloudAPI.OnResult = PlotGaze;
 });
+/** END GazeCloud API **/
+
+/** Buttons **/
+const start_calib_btn = document.getElementById("start_calib_btn");
+start_calib_btn.onclick = () => {
+  const modal_container = document.getElementById("modal_container");
+  modal_container.style.display = "none";
+  GazeCloudAPI.StartEyeTracking();
+};
+/** END Buttons **/
