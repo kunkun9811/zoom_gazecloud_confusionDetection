@@ -1,0 +1,199 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://api.gazerecorder.com/GazeCloudAPI.js"></script>
+  </head>
+  <body>
+    <h1>This is working!</h1>
+  </body>
+</html> -->
+
+<!-- NOTE: GazeCloud API sample app -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GazeCloudAPI</title>
+
+    <script src="https://api.gazerecorder.com/GazeCloudAPI.js"></script>
+
+    <style type="text/css">
+      body {
+        overflow: hidden;
+      }
+    </style>
+    <!-- <script type="text/javascript">
+      function PlotGaze(GazeData) {
+        /*
+                GazeData.state // 0: valid gaze data; -1 : face tracking lost, 1 : gaze uncalibrated
+                GazeData.docX // gaze x in document coordinates
+                GazeData.docY // gaze y in document cordinates
+                GazeData.time // timestamp
+            */
+
+        // NOTE: get DOM elements
+        document.getElementById("GazeData").innerHTML =
+          "GazeX: " + GazeData.GazeX + " GazeY: " + GazeData.GazeY;
+        document.getElementById("HeadPhoseData").innerHTML =
+          " HeadX: " +
+          GazeData.HeadX +
+          " HeadY: " +
+          GazeData.HeadY +
+          " HeadZ: " +
+          GazeData.HeadZ;
+        document.getElementById("HeadRotData").innerHTML =
+          " Yaw: " +
+          GazeData.HeadYaw +
+          " Pitch: " +
+          GazeData.HeadPitch +
+          " Roll: " +
+          GazeData.HeadRoll;
+
+        // NOTE: user gaze's x & y coordinates predicted by GazeCloud API
+        var x = GazeData.docX;
+        var y = GazeData.docY;
+
+        // NOTE: get gaze circle
+        var gaze = document.getElementById("gaze");
+
+        // NOTE: set x & y for the gaze prediction "circle" from its midpoint
+        // They do it this way because the circle was set to be intialized at
+        // the top, left corner. And using it's midpoint to move about the entire
+        // web page
+        x -= gaze.clientWidth / 2;
+        y -= gaze.clientHeight / 2;
+
+        // DEBUG: log x & y positions
+        // console.log("==========================================================================================");
+        // console.log(`GazeData.docX = ${x}`);
+        // console.log(`GazeData.docY = ${y}`);
+        // console.log(`gaze.clientWidth = ${gaze.clientWidth}`);
+        // console.log(`gaze.clientHeight = ${gaze.clientHeight}`);
+        // console.log(`gaze.clientWidth/2 = ${gaze.clientWidth/2}`);
+        // console.log(`gaze.clientHeight/2 = ${gaze.clientHeight/2}`);
+        // console.log("==========================================================================================");
+
+        // NOTE: set the absolute position of the gaze prediction "circle"
+        gaze.style.left = x + "px";
+        gaze.style.top = y + "px";
+
+        // NOTE: if the GazeData.state is not valid, a.k.a either face tracking lost (-1) or gaze uncalibrated (1)
+        // don't show the gaze prediction circle
+        if (GazeData.state != 0) {
+          if (gaze.style.display == "block") gaze.style.display = "none";
+        }
+        // NOTE: if the GazeData.state is not valid, a.k.a either face tracking lost (-1) or gaze uncalibrated (1)
+        // show the gaze prediction circle
+        else {
+          if (gaze.style.display == "none") gaze.style.display = "block";
+        }
+      }
+
+      //////NOTE: set callbacks/////////
+      window.addEventListener("load", function () {
+        GazeCloudAPI.OnCalibrationComplete = function () {
+          console.log("gaze Calibration Complete");
+        };
+        GazeCloudAPI.OnCamDenied = function () {
+          console.log("camera  access denied");
+        };
+        GazeCloudAPI.OnError = function (msg) {
+          console.log("err: " + msg);
+        };
+        GazeCloudAPI.UseClickRecalibration = true;
+        GazeCloudAPI.OnResult = PlotGaze;
+      });
+    </script> -->
+    <script src="./index.js"></script>
+    <style type="text/css">
+      body {
+        overflow: hidden;
+      }
+
+      img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 5%;
+        width: 80%;
+      }
+      #container {
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+        height: 100%;
+      }
+      #websdk-iframe {
+        width: 100%;
+        height: 100%;
+        /* NOTE: changed border style */
+        border: none;
+        /* border: 1px;
+          border-color: red;
+          border-style: dashed; */
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+      }
+      #plotting_svg {
+        position: absolute;
+        z-index: 100;
+      }
+      .invisible {
+        visibility: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>GazeCloudAPI integration example</h1>
+    <button type="button" onclick="GazeCloudAPI.StartEyeTracking();">
+      Start
+    </button>
+    <button type="button" onclick="GazeCloudAPI.StopEyeTracking();">
+      Stop
+    </button>
+    <!-- <div>
+         <p>  
+            Real-Time Result:
+         <p id = "GazeData" > </p>
+         <p id = "HeadPhoseData" > </p>
+         <p id = "HeadRotData" > </p>
+         </p>
+      </div> -->
+    <!-- NOTE: GazeCloud API gaze prediction circle -->
+    <div
+      id="gaze"
+      style="
+        position: absolute;
+        display: none;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: solid 2px rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 100px 3px rgba(125, 125, 125, 0.5);
+        pointer-events: none;
+        z-index: 999999;
+      "
+    ></div>
+    ;
+    <!-- NOTE: Where Zoom iframe will be in -->
+    <div id="container">
+      <svg id="plotting_svg"></svg>
+      <!-- <img src='regression.jpg'> -->
+    </div>
+    <!-- NOTE: iframe will be embedded in with embed.js -->
+
+    <script src="./js/Zoom/tool.js"></script>
+    <!-- <script src="./js/Zoom/embed.js"></script> -->
+    <!-- <script src="./js/Zoom/index.js"></script> -->
+    <!-- <script src="./js/Zoom/meeting.js"></script> -->
+    <!-- <script src="./js/Zoom/vconsole.min.js"></script> -->
+
+    <!-- TODO: ABOUT TO do ZOOM and then K8 confusion model -->
+  </body>
+</html>
