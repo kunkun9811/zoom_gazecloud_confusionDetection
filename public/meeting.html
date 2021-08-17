@@ -6,6 +6,8 @@
     <title>Meeting iframe</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://api.gazerecorder.com/GazeCloudAPI.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://source.zoom.us/1.9.7/css/bootstrap.css" />
+    <link type="text/css" rel="stylesheet" href="https://source.zoom.us/1.9.7/css/react-select.css" />
 
     <style type="text/css">
       body {
@@ -42,13 +44,7 @@
     <script src="js/Zoom/meeting.js"></script>
 
     <script>
-      const simd = async () =>
-        WebAssembly.validate(
-          new Uint8Array([
-            0, 97, 115, 109, 1, 0, 0, 0, 1, 4, 1, 96, 0, 0, 3, 2, 1, 0, 10, 9,
-            1, 7, 0, 65, 0, 253, 15, 26, 11,
-          ])
-        );
+      const simd = async () => WebAssembly.validate(new Uint8Array([0, 97, 115, 109, 1, 0, 0, 0, 1, 4, 1, 96, 0, 0, 3, 2, 1, 0, 10, 9, 1, 7, 0, 65, 0, 253, 15, 26, 11]));
       simd().then((res) => {
         console.log("simd check", res);
       });
