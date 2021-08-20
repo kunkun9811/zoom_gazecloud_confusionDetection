@@ -36,7 +36,7 @@ img {
 .invisible {
   visibility: hidden;
 }
-#modal_container {
+#calibrate_modal_container {
   position: absolute;
   top: 0;
   left: 0;
@@ -48,7 +48,7 @@ img {
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.7);
 }
-#calibrate_modal {
+.modal_inner_container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,7 +60,7 @@ img {
   overflow: hidden;
   background-color: white;
 }
-#calibrate_col1 {
+#logo_col {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -69,7 +69,7 @@ img {
   background-color: black;
 }
 
-#calibrate_col1 h1 {
+#logo_col h1 {
   color: white;
 }
 
@@ -84,4 +84,48 @@ img {
 
 #calibrate_col2 h3 {
   color: black;
+}
+
+#confusion_col1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 50%;
+
+  /* background-color: pink; */
+}
+
+#confusion_col2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 50%;
+
+  /* background-color: teal; */
+}
+
+#confusion_modal_text {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+#user_ready_btn {
+  margin-bottom: 10px;
+}
+
+#confusion_modal_container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.7);
 }

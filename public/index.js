@@ -86,8 +86,14 @@ window.addEventListener("load", function () {
 /** Buttons **/
 const start_calib_btn = document.getElementById("start_calib_btn");
 start_calib_btn.onclick = () => {
-  const modal_container = document.getElementById("modal_container");
+  const modal_container = document.getElementById("calibrate_modal_container");
   modal_container.style.display = "none";
   GazeCloudAPI.StartEyeTracking();
+};
+
+const skip_calib_btn = document.getElementById("skip_calib_btn");
+skip_calib_btn.onclick = () => {
+  const modal_container = document.getElementById("calibrate_modal_container");
+  modal_container.style.display = "none";
 };
 /** END Buttons **/

@@ -21,37 +21,43 @@
     <link rel="stylesheet" href="./styles/index.css" />
   </head>
   <body>
-    <!-- =========================NOTE: OG========================= -->
-    <!-- <h1>GazeCloudAPI integration example</h1>
-    <button type="button" onclick="GazeCloudAPI.StartEyeTracking();">
-      Start
-    </button>
-    <button type="button" onclick="GazeCloudAPI.StopEyeTracking();">
-      Stop
-    </button> -->
-    <!-- <div>
-         <p>  
-            Real-Time Result:
-         <p id = "GazeData" > </p>
-         <p id = "HeadPhoseData" > </p>
-         <p id = "HeadRotData" > </p>
-         </p>
-      </div> -->
-    <!-- =========================END OG========================= -->
-
     <!-- modal for calibration -->
-    <!-- <div id="modal_container">
-      <div id="calibrate_modal">
-        <div id="calibrate_col1">
+    <div id="calibrate_modal_container">
+      <div class="modal_inner_container">
+        <div id="logo_col">
           <h1>Aankh</h1>
         </div>
         <div id="calibrate_col2">
           <h3>Calibration</h3>
           <p>Let's first calibrate for gaze detection!</p>
-          <button id="start_calib_btn" type="button">Start</button>
+          <div id="btn_container">
+            <button id="start_calib_btn" type="button">Start</button>
+            <button id="skip_calib_btn" type="button">Skip</button>
+          </div>
         </div>
       </div>
-    </div> -->
+    </div>
+
+    <!-- modal for confusion detection  -->
+    <div id="confusion_modal_container">
+      <div class="modal_inner_container">
+        <div id="confusion_col1">
+          <p id="confusion_modal_text">Do you want confusion detection? If yes, please make a confused expression and press calibrate!</p>
+          <button id="user_ready_btn" type="button">Calibrate</button>
+          <button id="skip_confusion_calib_btn" type="button">Skip</button>
+        </div>
+        <div id="confusion_col2">
+          <!-- for video -->
+          <!-- facial expression -->
+          <div class="facemesh">
+            <video id="input_video" style="display: none"></video>
+            <!-- TODO: need to comment in this one later -->
+            <!-- <canvas id="output_canvas" width="320px" height="180px" style="display: none"></canvas> -->
+            <canvas id="output_canvas" width="320" height="180"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- NOTE: GazeCloud API gaze prediction circle -->
     <div
@@ -76,6 +82,10 @@
 
     <!-- Gaze Cloud + other UI functionalities -->
     <script src="./index.js"></script>
+
+    <!-- Confusion detection functionalities -->
+    <script src="./js/camera_utils.js"></script>
+    <script src="./js/confusion_video.js"></script>
 
     <!-- NOTE: iframe will be embedded in with embed.js -->
     <script src="./js/Zoom/tool.js"></script>
