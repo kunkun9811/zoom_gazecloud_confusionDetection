@@ -1,4 +1,5 @@
 body {
+  display: relative;
   overflow: hidden;
 }
 
@@ -36,6 +37,15 @@ img {
 .invisible {
   visibility: hidden;
 }
+
+#confusion_detection_result {
+  position: absolute;
+  color: white;
+  top: 30px;
+  right: 10px;
+  z-index: 9999999999;
+}
+
 #calibrate_modal_container {
   position: absolute;
   top: 0;

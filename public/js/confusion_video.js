@@ -5,7 +5,7 @@ const endpoint = "https://api.aankh.co/detection/confusion"; // NOTE: for produc
 // const username = 1;
 // const username = 2;
 // const username = 3;
-const username = 511;
+const username = 1111; // TODO: need to change this
 
 /* KEY: Some global variables - should be in another file for easier read */
 // stage
@@ -43,6 +43,7 @@ let userReady = false;
 /* KEY: Get frontend elements */
 let confusion_modal_container = document.getElementById("confusion_modal_container");
 let confusion_modal_text = document.getElementById("confusion_modal_text");
+let confusion_detection_result = document.getElementById("confusion_detection_result");
 
 /** KEY: **/
 /* Buttons */
@@ -106,6 +107,8 @@ const sendThatShitToTheBack = async (imgData) => {
       console.log("--------------------------------[normal request and response]--------------------------------");
       console.log(data);
       result = data.body.result;
+      // KEY: present prediction to the frontend
+      confusion_detection_result.innerText = `Cognitive State = ${result}`;
     })
     .catch((err) => {
       console.log(err);
