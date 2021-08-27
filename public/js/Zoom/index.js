@@ -27,54 +27,32 @@
 
   // NOTE: default values of the following fields
   // some help code, remember mn, pwd, lang to cookie, and autofill.
-  document.getElementById("display_name").value =
-    "CDN" +
-    ZoomMtg.getJSSDKVersion()[0] +
-    testTool.detectOS() +
-    "#" +
-    testTool.getBrowserInfo();
-  document.getElementById("meeting_number").value =
-    testTool.getCookie("meeting_number");
-  document.getElementById("meeting_pwd").value =
-    testTool.getCookie("meeting_pwd");
-  if (testTool.getCookie("meeting_lang"))
-    document.getElementById("meeting_lang").value =
-      testTool.getCookie("meeting_lang");
+  document.getElementById("display_name").value = "CDN" + ZoomMtg.getJSSDKVersion()[0] + testTool.detectOS() + "#" + testTool.getBrowserInfo();
+  document.getElementById("meeting_number").value = testTool.getCookie("meeting_number");
+  document.getElementById("meeting_pwd").value = testTool.getCookie("meeting_pwd");
+  if (testTool.getCookie("meeting_lang")) document.getElementById("meeting_lang").value = testTool.getCookie("meeting_lang");
 
   // NOTE: meeting language
-  document
-    .getElementById("meeting_lang")
-    .addEventListener("change", function (e) {
-      testTool.setCookie(
-        "meeting_lang",
-        document.getElementById("meeting_lang").value
-      );
-      testTool.setCookie(
-        "_zm_lang",
-        document.getElementById("meeting_lang").value
-      );
-    });
+  document.getElementById("meeting_lang").addEventListener("change", function (e) {
+    testTool.setCookie("meeting_lang", document.getElementById("meeting_lang").value);
+    testTool.setCookie("_zm_lang", document.getElementById("meeting_lang").value);
+  });
 
   // NOTE:
   // copy zoom invite link to mn, autofill mn and pwd.
-  document
-    .getElementById("meeting_number")
-    .addEventListener("input", function (e) {
-      var tmpMn = e.target.value.replace(/([^0-9])+/i, "");
-      if (tmpMn.match(/([0-9]{9,11})/)) {
-        tmpMn = tmpMn.match(/([0-9]{9,11})/)[1];
-      }
-      var tmpPwd = e.target.value.match(/pwd=([\d,\w]+)/);
-      if (tmpPwd) {
-        document.getElementById("meeting_pwd").value = tmpPwd[1];
-        testTool.setCookie("meeting_pwd", tmpPwd[1]);
-      }
-      document.getElementById("meeting_number").value = tmpMn;
-      testTool.setCookie(
-        "meeting_number",
-        document.getElementById("meeting_number").value
-      );
-    });
+  document.getElementById("meeting_number").addEventListener("input", function (e) {
+    var tmpMn = e.target.value.replace(/([^0-9])+/i, "");
+    if (tmpMn.match(/([0-9]{9,11})/)) {
+      tmpMn = tmpMn.match(/([0-9]{9,11})/)[1];
+    }
+    var tmpPwd = e.target.value.match(/pwd=([\d,\w]+)/);
+    if (tmpPwd) {
+      document.getElementById("meeting_pwd").value = tmpPwd[1];
+      testTool.setCookie("meeting_pwd", tmpPwd[1]);
+    }
+    document.getElementById("meeting_number").value = tmpMn;
+    testTool.setCookie("meeting_number", document.getElementById("meeting_number").value);
+  });
 
   // NOTE: clear all fields button
   document.getElementById("clear_all").addEventListener("click", function (e) {
@@ -89,41 +67,39 @@
 
   // NOTE: join meeting button
   // click join meeting button
-  document
-    .getElementById("join_meeting")
-    .addEventListener("click", function (e) {
-      // NOTE: disable default button click behavior, allow us to fully customize our own behavior
-      e.preventDefault();
-      var meetingConfig = testTool.getMeetingConfig();
-      if (!meetingConfig.mn || !meetingConfig.name) {
-        alert("Meeting number or username is empty");
-        return false;
-      }
+  document.getElementById("join_meeting").addEventListener("click", function (e) {
+    // NOTE: disable default button click behavior, allow us to fully customize our own behavior
+    e.preventDefault();
+    var meetingConfig = testTool.getMeetingConfig();
+    if (!meetingConfig.mn || !meetingConfig.name) {
+      alert("Meeting number or username is empty");
+      return false;
+    }
 
-      testTool.setCookie("meeting_number", meetingConfig.mn);
-      testTool.setCookie("meeting_pwd", meetingConfig.pwd);
+    testTool.setCookie("meeting_number", meetingConfig.mn);
+    testTool.setCookie("meeting_pwd", meetingConfig.pwd);
 
-      // NOTE: zoom provided signature generation function in their sample app
-      var signature = ZoomMtg.generateSignature({
-        meetingNumber: meetingConfig.mn,
-        apiKey: API_KEY,
-        apiSecret: API_SECRET,
-        role: meetingConfig.role,
-        success: function (res) {
-          console.log(res.result);
-          meetingConfig.signature = res.result;
-          meetingConfig.apiKey = API_KEY;
-          // TODO: meeting.html
-          var joinUrl = "/meeting.html?" + testTool.serialize(meetingConfig);
-          console.log(joinUrl);
-          // window.open(joinUrl, "_blank");
-          // NOTE: open meeting.html in the iframe created in "embed.js"
-          window.open(joinUrl, "websdk-iframe"); // open within iframe
-          // // 2020.10.28
-          // testTool.createZoomNode("websdk-iframe", joinUrl);
-        },
-      });
+    // NOTE: zoom provided signature generation function in their sample app
+    var signature = ZoomMtg.generateSignature({
+      meetingNumber: meetingConfig.mn,
+      apiKey: API_KEY,
+      apiSecret: API_SECRET,
+      role: meetingConfig.role,
+      success: function (res) {
+        console.log(res.result);
+        meetingConfig.signature = res.result;
+        meetingConfig.apiKey = API_KEY;
+        // KEY: constructing the "Zoom URL" to call on the Zoom API
+        var joinUrl = "/meeting.html?" + testTool.serialize(meetingConfig);
+        console.log(joinUrl);
+        // window.open(joinUrl, "_blank");
+        // NOTE: open meeting.html in the iframe created in "embed.js"
+        window.open(joinUrl, "websdk-iframe"); // open within iframe
+        // // 2020.10.28
+        // testTool.createZoomNode("websdk-iframe", joinUrl);
+      },
     });
+  });
 
   // NOTE: copy join link
   // click copy jon link button
@@ -142,10 +118,7 @@
         console.log(res.result);
         meetingConfig.signature = res.result;
         meetingConfig.apiKey = API_KEY;
-        var joinUrl =
-          testTool.getCurrentDomain() +
-          "/meeting.html?" +
-          testTool.serialize(meetingConfig);
+        var joinUrl = testTool.getCurrentDomain() + "/meeting.html?" + testTool.serialize(meetingConfig);
         $(element).attr("link", joinUrl);
         var $temp = $("<input>");
         $("body").append($temp);
